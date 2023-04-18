@@ -16,7 +16,7 @@ const ENV = process.env.NODE_ENV;
 // };
 
 import banner from 'rollup-plugin-banner'
-const bannerStr = `(c) ${new Date().getFullYear()} GuaiShou ${new Date().toLocaleString()}`
+const bannerStr = `(c) ${new Date().getFullYear()} Lin ${new Date().toLocaleString()}`
 
 const babelOptions = [
   resolve(),
