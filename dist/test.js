@@ -1,2 +1,2 @@
-// (c) 2023 Lin 2023/4/18 下午1:44:02
+// (c) 2023 Lin 2023/4/18 下午1:45:03
 !function(e,t){"object"==typeof exports&&"undefined"!=typeof module?module.exports=t():"function"==typeof define&&define.amd?define(t):(e=e||self).test=t()}(this,function(){"use strict";return{test:function(){console.log(1)}}});
