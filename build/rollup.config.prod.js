@@ -3,8 +3,12 @@ import commonjs from 'rollup-plugin-commonjs';
 import { eslint } from 'rollup-plugin-eslint';
 import babel from 'rollup-plugin-babel';
 import replace from 'rollup-plugin-replace';
-import { uglify } from 'rollup-plugin-uglify';
-import { minify } from 'uglify-es';
+// import { uglify } from 'rollup-plugin-uglify';
+// import { minify } from 'uglify-es';
+// 查看构建后的文件大小
+import filesize from 'rollup-plugin-filesize'
+// 代码压缩
+import { terser } from 'rollup-plugin-terser';
 // const path = require('path'); 
 
 const configList = require('./rollup.config');
@@ -16,24 +20,46 @@ const ENV = process.env.NODE_ENV;
 // };
 
 import banner from 'rollup-plugin-banner'
-const bannerStr = `(c) ${new Date().getFullYear()} Lin ${new Date().toLocaleString()}`
+const bannerStr = `(c) ${new Date().getFullYear()} GuaiShou ${new Date().toLocaleString()}`
 
 const babelOptions = [
   resolve(),
+  filesize(),
   commonjs(),
+  terser({ compress: { drop_console: true } }),
   eslint({
     include: ['src/**'],
     exclude: ['node_modules/**']
   }),
   babel({
-    exclude: 'node_modules/**',
+    // exclude: 'node_modules/**',
     runtimeHelpers: true,
+    "presets": [
+      [
+          "@babel/preset-env",
+          {
+              "modules": false,
+              // "useBuiltIns": "usage",
+              // "corejs": "2.6.10",
+              "targets": {
+                  "ie": 10
+              }
+          }
+      ]
+    ],
+    "plugins": [
+        "transform-remove-console",
+    ],
+    "ignore": [
+        "node_modules/**"
+    ],
+    "exclude": 'node_modules/**',
   }),
   replace({
     exclude: 'node_modules/**',
     ENV: JSON.stringify(ENV),
   }),
-  (ENV === 'production' && uglify(minify)),
+  // (ENV === 'production' && uglify(minify)),
   banner(bannerStr)
 ];
 
