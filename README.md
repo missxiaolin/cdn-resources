@@ -1,4 +1,3 @@
-
 # Rollup 打包介绍
 
 rollup 采用 es6 原生的模块机制进行模块的打包构建，rollup 更着眼于未来，对 commonjs 模块机制不提供内置的支持，是一款更轻量的打包工具。rollup 比较适合打包 js 的 sdk 或者封装的框架等，例如，vue 源码就是 rollup 打包的。而 webpack 比较适合打包一些应用，例如 SPA 或者同构项目等等。
@@ -16,26 +15,20 @@ npm install --save-dev rollup
 1.rollup 默认打包文件命令 rollup -c or rollup -config 默认执行根目录下 rollup.config.js
 
 ```js
-
-rollup -c 
+rollup - c;
 // or
-rollup -config
-
+rollup - config;
 ```
 
 2.rollup 打包文件，需要监听文件变更，自动打包，使用以下命令
 
 ```js
-
- rollup -w -c
-
+rollup - w - c;
 ```
-
-
 
 ## 创建配置文件
 
-在rollup 文件夹中创建一个新文件 rollup.config.js。之后在文件中添加下面的内容：
+在 rollup 文件夹中创建一个新文件 rollup.config.js。之后在文件中添加下面的内容：
 
 ```js
 export default {
@@ -43,8 +36,8 @@ export default {
   output: {
     file: "dist/js/main.min.js",
     format: "umd",
-    name: 'bundle-name'
-  }
+    name: "bundle-name",
+  },
 };
 ```
 
@@ -101,7 +94,7 @@ import babel from "rollup-plugin-babel";
 export default {
   plugins: [
     babel({
-      exclude: 'node_modules/**',
+      exclude: "node_modules/**",
     }),
   ],
 };
@@ -144,23 +137,23 @@ npm install --save-dev rollup-plugin-eslint
 接下来，import ESLint 插件并将它添加到 Rollup 配置中：
 
 ```js
-import eslint from 'rollup-plugin-eslint';
+import eslint from "rollup-plugin-eslint";
 
 export default {
   plugins: [
     eslint({
       exclude: [
-        throwOnError: true,
-        throwOnWarning: true,
-        include: ['src/**'],
-        exclude: ['node_modules/**']
-      ]
+        (throwOnError: true),
+        (throwOnWarning: true),
+        (include: ["src/**"]),
+        (exclude: ["node_modules/**"]),
+      ],
     }),
   ],
 };
 ```
 
-> eslint插件有两个属性需要说明：throwOnError 和 throwOnWarning 设置为 true 时，如果在 eslint 的检查过程中发现了 error 或warning，就会抛出异常，阻止打包继续执行（如果设置为false，就只会输出eslint检测结果，而不会停止打包）
+> eslint 插件有两个属性需要说明：throwOnError 和 throwOnWarning 设置为 true 时，如果在 eslint 的检查过程中发现了 error 或 warning，就会抛出异常，阻止打包继续执行（如果设置为 false，就只会输出 eslint 检测结果，而不会停止打包）
 
 ## 兼容 commonjs
 
@@ -179,9 +172,9 @@ npm install --save-dev rollup-plugin-commonjs rollup-plugin-node-resolve
 ### 更新 rollup.config.js
 
 ```js
-import babel from 'rollup-plugin-babel';
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
+import babel from "rollup-plugin-babel";
+import resolve from "rollup-plugin-node-resolve";
+import commonjs from "rollup-plugin-commonjs";
 
 export default {
   plugins: [
@@ -192,7 +185,7 @@ export default {
     }),
     commonjs(),
     babel({
-      exclude: 'node_modules/**',
+      exclude: "node_modules/**",
     }),
   ],
 };
@@ -220,9 +213,9 @@ import replace from "rollup-plugin-replace";
 export default {
   plugins: [
     replace({
-      ENV: JSON.stringify(process.env.NODE_ENV)
-    })
-  ]
+      ENV: JSON.stringify(process.env.NODE_ENV),
+    }),
+  ],
 };
 ```
 
@@ -248,9 +241,7 @@ npm install --save-dev rollup-plugin-uglify
 import uglify from "rollup-plugin-uglify";
 
 export default {
-  plugins: [
-    process.env.NODE_ENV === "production" && uglify()
-  ]
+  plugins: [process.env.NODE_ENV === "production" && uglify()],
 };
 ```
 
@@ -261,62 +252,58 @@ export default {
 rollup.config.js 配置
 
 ```js
-import resolve from 'rollup-plugin-node-resolve';
-import commonjs from 'rollup-plugin-commonjs';
-import { eslint } from 'rollup-plugin-eslint';
-import babel from 'rollup-plugin-babel';
-import replace from 'rollup-plugin-replace';
-import { uglify } from 'rollup-plugin-uglify';
+import resolve from "rollup-plugin-node-resolve";
+import commonjs from "rollup-plugin-commonjs";
+import { eslint } from "rollup-plugin-eslint";
+import babel from "rollup-plugin-babel";
+import replace from "rollup-plugin-replace";
+import { uglify } from "rollup-plugin-uglify";
 
-const packages = require('./package.json');
+const packages = require("./package.json");
 
 const ENV = process.env.NODE_ENV;
 
 const paths = {
-    input: {
-        root: ENV !== 'production'
-            ? 'example/index.js'
-            : 'src/index.js',
-    },
-    output: {
-        root: ENV !== 'production'
-            ? 'example/dist/'
-            : 'dist/',
-    },
+  input: {
+    root: ENV !== "production" ? "example/index.js" : "src/index.js",
+  },
+  output: {
+    root: ENV !== "production" ? "example/dist/" : "dist/",
+  },
 };
 
 const fileNames = {
-    development: `${packages.name}.js`,
-    example: `example.js`,
-    production: `${packages.name}.min.js`
+  development: `${packages.name}.js`,
+  example: `example.js`,
+  production: `${packages.name}.min.js`,
 };
 
 const fileName = fileNames[ENV];
 
 export default {
-    input: `${paths.input.root}`,
-    output: {
-        file: `${paths.output.root}${fileName}`,
-        format: 'umd',
-        name: 'bundle-name'
-    },
-    plugins: [
-        resolve(),
-        commonjs(),
-        eslint({
-            include: ['src/**'],
-            exclude: ['node_modules/**']
-        }),
-        babel({
-            exclude: 'node_modules/**',
-            runtimeHelpers: true,
-        }),
-        replace({
-            exclude: 'node_modules/**',
-            ENV: JSON.stringify(process.env.NODE_ENV),
-        }),
-        (ENV === 'production' && uglify()),
-    ],
+  input: `${paths.input.root}`,
+  output: {
+    file: `${paths.output.root}${fileName}`,
+    format: "umd",
+    name: "bundle-name",
+  },
+  plugins: [
+    resolve(),
+    commonjs(),
+    eslint({
+      include: ["src/**"],
+      exclude: ["node_modules/**"],
+    }),
+    babel({
+      exclude: "node_modules/**",
+      runtimeHelpers: true,
+    }),
+    replace({
+      exclude: "node_modules/**",
+      ENV: JSON.stringify(process.env.NODE_ENV),
+    }),
+    ENV === "production" && uglify(),
+  ],
 };
 ```
 
@@ -326,8 +313,112 @@ export default {
 
 [如何通过 Rollup.js 打包 JavaScript](https://zhuanlan.zhihu.com/p/28096758)
 
-[rollup打包js的注意点](https://juejin.im/post/5beae896f265da61682aebae)
+[rollup 打包 js 的注意点](https://juejin.im/post/5beae896f265da61682aebae)
 
 [babel 7 教程](https://blog.zfanw.com/babel-js/)
 
-[S打包工具rollup——完全入门指南](https://segmentfault.com/a/1190000010628352#articleHeader15)
+[S 打包工具 rollup——完全入门指南](https://segmentfault.com/a/1190000010628352#articleHeader15)
+
+## :package: API 文档
+
+### Array
+
+#### &emsp;&emsp;[arrayEqual][arrayEqual]&emsp;&emsp;判断两个数组是否相等
+
+### Class
+
+#### &emsp;&emsp;[addClass][addClass]&emsp;&emsp;为元素添加 class
+
+#### &emsp;&emsp;[hasClass][hasClass]&emsp;&emsp;判断元素是否有某个 class
+
+#### &emsp;&emsp;[removeClass][removeClass]&emsp;&emsp;为元素移除 class
+
+### Cookie
+
+#### &emsp;&emsp;[getCookie][getCookie]&emsp;&emsp;根据 name 读取 Cookie
+
+#### &emsp;&emsp;[removeCookie][removeCookie]&emsp;&emsp;根据 name 删除 Cookie
+
+#### &emsp;&emsp;[setCookie][setCookie]&emsp;&emsp;添加 Cookie
+
+### Device
+
+#### &emsp;&emsp;[getExplore][getExplore]&emsp;&emsp;获取浏览器类型和版本号
+
+#### &emsp;&emsp;[getOS][getOS]&emsp;&emsp;获取操作系统类型
+
+### Dom
+
+#### &emsp;&emsp;[getScrollTop][getScrollTop]&emsp;&emsp;获取滚动条距顶部的距离
+
+#### &emsp;&emsp;[offset][offset]&emsp;&emsp;获取一个元素的距离文档(document)的位置，类似 jQ 中的 offset()
+
+#### &emsp;&emsp;[scrollTo][scrollTo]&emsp;&emsp;在${duration}时间内，滚动条平滑滚动到${to}指定位置
+
+#### &emsp;&emsp;[setScrollTop][setScrollTop]&emsp;&emsp;设置滚动条距顶部的距离
+
+#### &emsp;&emsp;[windowResize][windowResize]&emsp;&emsp;H5 软键盘缩回、弹起回调
+
+### Function
+
+#### &emsp;&emsp;[debounce][debounce]&emsp;&emsp;函数防抖
+
+#### &emsp;&emsp;[throttle][throttle]&emsp;&emsp;函数节流
+
+### Keycode
+
+#### &emsp;&emsp;[getKeyName][getKeyName]&emsp;&emsp;根据 keycode 获得键名
+
+### Object
+
+#### &emsp;&emsp;[deepClone][deepClone]&emsp;&emsp;深拷贝，支持常见类型
+
+#### &emsp;&emsp;[isEmptyObject][isEmptyObject]&emsp;&emsp;判断 Object 是否为空
+
+### Random
+
+#### &emsp;&emsp;[randomColor][randomColor] &emsp;&emsp;随机生成颜色
+
+#### &emsp;&emsp;[randomNum][randomNum]&emsp;&emsp;生成指定范围随机数
+
+### Regexp
+
+#### &emsp;&emsp;[isColor][isColor]&emsp;&emsp;判断是否为 16 进制颜色，rgb 或 rgba
+
+#### &emsp;&emsp;[isEmail][isEmail]&emsp;&emsp;判断是否为邮箱地址
+
+#### &emsp;&emsp;[isIdCard][isIdCard]&emsp;&emsp;判断是否为身份证号
+
+#### &emsp;&emsp;[isPhoneNum][isPhoneNum]&emsp;&emsp;判断是否为手机号
+
+#### &emsp;&emsp;[isUrl][isUrl]&emsp;&emsp;判断是否为 URL 地址
+
+### String
+
+#### &emsp;&emsp;[digitUppercase][digitUppercase]&emsp;&emsp;现金额转大写
+
+### Support
+
+#### &emsp;&emsp;[isSupportWebP][isSupportWebP]&emsp;&emsp;判断浏览器是否支持 webP 格式图片
+
+####
+
+### Time
+
+#### &emsp;&emsp;[formatPassTime][formatPassTime]&emsp;&emsp;格式化${startTime}距现在的已过时间
+
+#### &emsp;&emsp;[formatRemainTime][formatRemainTime]&emsp;&emsp;格式化现在距${endTime}的剩余时间
+
+#### &emsp;&emsp;[isLeapYear][isLeapYear]&emsp;&emsp;判断是否为闰年
+
+#### &emsp;&emsp;[isSameDay][isSameDay]&emsp;&emsp;判断是否为同一天
+
+#### &emsp;&emsp;[timeLeft][timeLeft]&emsp;&emsp;计算${startTime - endTime}的剩余时间
+
+#### &emsp;&emsp;[monthDays][monthDays]&emsp;&emsp;获取指定日期月份的总天数
+
+### Url
+
+#### &emsp;&emsp;[parseQueryString][parseQueryString]&emsp;&emsp;url 参数转对象
+
+#### &emsp;&emsp;[stringfyQueryString][stringfyQueryString]&emsp;&emsp;对象序列化
